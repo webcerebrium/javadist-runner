@@ -18,15 +18,16 @@ const done = (data) => {
 const downloadFile = (source) => {
   const parts = source.split('/');
   const destination = parts[parts.length - 1].replace(/\.zip$/, '');
+  console.log(shell.exec('rm -rf ' + destination + '.zip ' + destination).stdout);
   const cmd = 'wget --check-certificate=off -q ' + source + ' -O ' + destination + '.zip';
-  //TEMP console.log(shell.exec(cmd).stdout);  
+  console.log(shell.exec(cmd).stdout);  
   return destination;
 };
 
 const unpackFile = (filepath) => {
-  const cmd = 'unzip -q ' + filepath;
-  //TEMP console.log(shell.exec(cmd).stdout);  
-  //TEMP console.log(shell.exec('rm -f ' + filepath).stdout);   // remove original zip file
+  const cmd = 'unzip ' + filepath;
+  console.log(shell.exec(cmd).stdout);  
+  console.log(shell.exec('rm -f ' + filepath).stdout);   // remove original zip file
 };
 
 const getShellFile = (packageName) => {
@@ -40,12 +41,13 @@ const updateShellFile = (filePath) => {
    if (fs.existsSync('./.javadist')) {
      const properties = PropertiesReader('./.javadist');
      if (properties.path().DEFAULT_JVM_OPTS) {
-       let replacement = "DEFAULT_JVM_OPTS=";
+       let replacement = "DEFAULT_JVM_OPTS='";
        Object.keys(properties.path().DEFAULT_JVM_OPTS).forEach(key => {
          const val = properties.path().DEFAULT_JVM_OPTS[key];
          console.log(key, ':', val); 
 	 replacement += '"-D' + key + '=' + val + '" ';
-       })
+       });
+       replacement += "'";
        console.log('Replacement ', replacement);
 
        const escaped = replacement.replace(/\"/g, "\\\"");
@@ -57,7 +59,7 @@ const updateShellFile = (filePath) => {
 };
 
 const killRunningProceses = (shellFile) => {
-  const cmd = "ps -ax | grep " + shellFile + " | grep -v grep | awk -e '{print $1}' | xargs kill -9";
+  const cmd = "ps -ax | grep 'java ' | grep " + shellFile + " | grep -v grep | awk -e '{print $1}' | xargs kill -9";
   console.log(shell.exec(cmd).stdout);    
 };
 
@@ -87,7 +89,7 @@ if (process.mainModule && process.mainModule.filename === __filename) {
      killRunningProceses(shellFile);
 
      console.log('Launching ' + shellFile);
-     launchProcess(shellFile);
+     launchProcess(packageName, shellFile);
 
    } else {
       err( [ "USAGE: javadist-runner <zip-url>" ].join('\n'));
