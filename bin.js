@@ -25,7 +25,7 @@ const downloadFile = (source) => {
 };
 
 const unpackFile = (filepath) => {
-  const cmd = 'unzip ' + filepath;
+  const cmd = 'unzip -qo ' + filepath;
   console.log(shell.exec(cmd).stdout);  
   console.log(shell.exec('rm -f ' + filepath).stdout);   // remove original zip file
 };
