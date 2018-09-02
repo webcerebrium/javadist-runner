@@ -66,6 +66,10 @@ const killRunningProceses = (shellFile) => {
 const launchProcess = (packageName, shellFile) => {
   const logFile = shellFile + '.log';
   shell.exec("mkdir -p /var/log/jvm"); // ensure we have folder for logs
+  if (!fs.existsSync("/etc/logrotate.d/jvm") {
+     fs.writeFileSync("/etc/logrotate.d/jvm", 
+    "  /var/log/jvm/*.log {\tweekly\n\trotate 10\n\tcopytruncate\n\tdelaycompress\n\tcompress\n\tnotifempty\n\tmissingok\n}\n");
+  }
   const cmd = 'cd ' + packageName + '/bin && nohup ./' + shellFile + ' > /var/log/jvm/' + logFile + ' 2>&1 &';
   console.log(shell.exec(cmd).stdout);    
 };
