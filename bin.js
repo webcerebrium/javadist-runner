@@ -65,7 +65,8 @@ const killRunningProceses = (shellFile) => {
 
 const launchProcess = (packageName, shellFile) => {
   const logFile = shellFile + '.log';
-  const cmd = 'cd ' + packageName + '/bin && nohup ./' + shellFile + ' > ' + logFile + ' 2>&1 &';
+  shell.exec("mkdir -p /var/log/jvm"); // ensure we have folder for logs
+  const cmd = 'cd ' + packageName + '/bin && nohup ./' + shellFile + ' > /var/log/jvm/' + logFile + ' 2>&1 &';
   console.log(shell.exec(cmd).stdout);    
 };
 

@@ -1,6 +1,6 @@
 {
   "name": "javadist-runner",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Downloads remote asset-manifest.json from the URL in the first argument with all files declared in it",
   "engines": {
     "node": ">=0.6.0"
