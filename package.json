@@ -19,7 +19,7 @@
     "type": "git",
     "url": "git+https://github.com/webcerebrium/javadist-runner.git"
   },
-  "keywords": [],
+  "keywords": ["java", "gradle", "distZip", "runner", "launcher"],
   "author": "Web Cerebrium <webcerebrium@gmail.com> (https://webcerebrium.com/)",
   "bugs": {
     "url": "https://github.com/webcerebrium/javadist-runner/issues"
